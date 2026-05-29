@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 35a56c1d356c2934abe46ab2c66f6d5c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310858
+  packageName: Maze Generator V
+  packageVersion: 1.2.2
+  assetPath: Assets/MazeAsset/Scripts/Runtime/MazeScripts/Minimap/Service/MinimapUpdaterService.cs
+  uploadId: 750335

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a6a2285ca0e22a54881aa914059a18a1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310858
+  packageName: Maze Generator V
+  packageVersion: 1.2.2
+  assetPath: Assets/MazeAsset/Scripts/Runtime/MazeScripts/Elevator/interaction/ElevatorInteractionSquare.cs
+  uploadId: 750335
