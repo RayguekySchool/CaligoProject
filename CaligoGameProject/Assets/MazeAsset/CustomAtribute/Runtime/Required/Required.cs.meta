@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b5e4efc6e77a60349aecc36fd94c4064
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310858
+  packageName: Maze Generator V
+  packageVersion: 1.2.2
+  assetPath: Assets/MazeAsset/CustomAtribute/Runtime/Required/Required.cs
+  uploadId: 750335

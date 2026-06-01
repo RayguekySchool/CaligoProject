@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: de91b503d102a0942bd56159844a01ce
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310858
+  packageName: Maze Generator V
+  packageVersion: 1.2.2
+  assetPath: Assets/MazeAsset/Scripts/Runtime/MazeScripts/Minimap/Minimap.cs
+  uploadId: 750335

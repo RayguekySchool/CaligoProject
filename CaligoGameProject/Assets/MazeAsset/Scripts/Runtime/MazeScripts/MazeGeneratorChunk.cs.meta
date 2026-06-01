@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0339157cbec056b409f57b0b2a4cf3b8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310858
+  packageName: Maze Generator V
+  packageVersion: 1.2.2
+  assetPath: Assets/MazeAsset/Scripts/Runtime/MazeScripts/MazeGeneratorChunk.cs
+  uploadId: 750335
