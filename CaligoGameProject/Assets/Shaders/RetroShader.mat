@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Dither:
-        m_Texture: {fileID: 2800000, guid: d45e80d0bd6660847bf1de82ae0f9fbd, type: 3}
+        m_Texture: {fileID: 2800000, guid: b77d96951a1f9f64588928cf4ee5752e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Pallet:
-        m_Texture: {fileID: 2800000, guid: d45e80d0bd6660847bf1de82ae0f9fbd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7845a269a88bdd7409fe1b9c4c11364b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -50,9 +50,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
-    - _Dither_Oppacity: 0.5
-    - _Quantization_Level: 0
-    - _Saturation_Layer: 0
+    - _Dither_Oppacity: 0.25
+    - _Quantization_Level: 64
+    - _Saturation_Layer: 1
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
