@@ -48,16 +48,6 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeBullet(string bulletType)
     {
-        if (!bulletHits.ContainsKey(bulletType)) return;
-
-        bulletHits[bulletType]++;
-        int needed = resistances.Find(x => x.bulletType == bulletType).bulletsToKill;
-
-        // Reduce health based on bullet type (example: each bullet reduces by maxHealth / bulletsToKill)
-        float damage = maxHealth / needed;
-        health -= damage;
-        health = Mathf.Clamp(health, 0, maxHealth);
-
         healthBar.UpdateHealthBar(health, maxHealth);
 
         if (bulletHits[bulletType] >= needed || health <= 0)
