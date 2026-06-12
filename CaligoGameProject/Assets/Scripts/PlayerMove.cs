@@ -13,7 +13,7 @@ public class PlayerMove : MonoBehaviour
 
     private Vector3 inputVector;
     private Vector3 movementVector;
-    private float myGravity = -100f;
+    private float myGravity = -10f;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
