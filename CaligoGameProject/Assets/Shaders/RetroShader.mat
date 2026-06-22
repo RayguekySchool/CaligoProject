@@ -51,8 +51,8 @@ Material:
     m_Floats:
     - _ColorMask: 15
     - _Dither_Oppacity: 0.25
-    - _Quantization_Level: 64
-    - _Saturation_Layer: 1
+    - _Quantization_Level: 128
+    - _Saturation_Layer: 2
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
