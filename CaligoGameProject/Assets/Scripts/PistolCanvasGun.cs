@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class PistolaCanvasGun : MonoBehaviour
+public class PistolCanvasGun : MonoBehaviour
 {
     [Header("Pistol config")]
     public Animator animator;

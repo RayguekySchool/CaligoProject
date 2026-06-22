@@ -6,9 +6,10 @@ public class RenderingShootingEffect : MonoBehaviour
     [SerializeField] private Camera targetCamera;
     [SerializeField] private RenderTexture renderTexture;
     [SerializeField] private GameObject targetShaderCanvas;
+    [SerializeField] private PistolCanvasGun pistolaCanvasGun;
 
     [Header("Settings")]
-    [SerializeField] private bool StartWithTextureOn = false;
+    [SerializeField] public bool StartWithTextureOn = false;
 
     private bool isTextureActive;
 
