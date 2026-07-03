@@ -1,27 +1,36 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerDetector : MonoBehaviour
 {
+    public float DetectRange = 10;
+
+    bool isInAngle, isInRange, isNotHiding;
+
+    public GameObject player;
+    TMP_Text Rangetext;
+
     void Start()
     {
-        Mesh mesh = new Mesh();
-        GetComponent < MeshFilter>().mesh = mesh;
+        
+    }
 
-        Vector3[] vertices = new Vector3[3];
-        Vector2[] uv = new Vector2[3];
-        int[] triangles = new int[3];
+    private void Update()
+    {
+        isInAngle = false;
+        isInRange = false;
+        isNotHiding = false;
 
-        vertices[0] = Vector3.zero;
-        vertices[1] = new Vector3(50, 0);
-        vertices[2] = new Vector3(0, -50);
+        if(Vector3.Distance(transform.position, player.transform.position) <= DetectRange)
+        {
+            isInRange = true;
+        }
 
-        triangles[0] = 0;
-        triangles[1] = 1;
-        triangles[2] = 2;
-
-        mesh.vertices = vertices;
-        mesh.uv = uv;
-        mesh.triangles = triangles;
+        else
+        {
+            Rangetext.text = "Player is out of range";
+            Rangetext.color = Color.green;
+        }
     }
 
 }
