@@ -12,6 +12,8 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private bool canSprint = true;
     [SerializeField] private bool canJump = true;
     [SerializeField] private bool canCrouch = true;
+    [SerializeField] private bool canUseHeadbob = true;
+    [SerializeField] private bool WillSlideOnSlopes = true;
 
     [Header("Controls")]
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
@@ -22,6 +24,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float walkSpeed = 3.0f;
     [SerializeField] private float sprintSpeed = 6.0f;
     [SerializeField] private float crouchSpeed = 1.5f;
+    [SerializeField] private float slopeSpeed = 1.5f;
 
     [Header("Jumping Parameters")]
     [SerializeField] private float jumpForce = 8.0f;
@@ -39,13 +42,42 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float timeToCrouch = 0.25f;
     [SerializeField] private Vector3 crouchCenter = new Vector3(0, 0.5f, 0);
     [SerializeField] private Vector3 standingCenter = new Vector3(0, 1.0f, 0);
+    private bool isCrouching;
+    private bool duringCrouchAnimation;
 
     [Header("Camera Crouch Settings")]
     [SerializeField] private float crouchCameraHeight = 0.8f;
     [SerializeField] private float standCameraHeight = 1.5f;
 
-    private bool isCrouching;
-    private bool duringCrouchAnimation;
+    [Header("Headbob Parameters")]
+    [SerializeField] private float walkBobSpeed = 14f;
+    [SerializeField] private float walkBobAmout = 0.05f;
+    [SerializeField] private float sprintBobSpeed = 18f;
+    [SerializeField] private float sprintBobAmout = 0.11f;
+    [SerializeField] private float crouchBobSpeed = 8f;
+    [SerializeField] private float crouchBobAmout = 0.05f;
+    private float defautYPos = 0;
+    private float timer;
+
+    // Sliding Parameters
+
+    private Vector3 hitPointNormal;
+
+    private bool IsSliding
+    {
+        get
+        {
+            if (characterController.isGrounded && Physics.Raycast(transform.position, Vector3.down, out RaycastHit slopeHit, 2f))
+            {
+                hitPointNormal = slopeHit.normal;
+                return Vector3.Angle(hitPointNormal, Vector3.up) > characterController.slopeLimit;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 
     private Camera playerCamera;
     private CharacterController characterController;
@@ -59,6 +91,7 @@ public class FirstPersonController : MonoBehaviour
     {
         playerCamera = GetComponentInChildren<Camera>();
         characterController = GetComponent<CharacterController>();
+        defautYPos = playerCamera.transform.localPosition.y;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -80,6 +113,9 @@ public class FirstPersonController : MonoBehaviour
 
             if (canCrouch)
                 HandleCrouch();
+
+            if (canUseHeadbob)
+                HandleHeadbob();
 
             ApplyFineMovements();
         }
@@ -116,10 +152,27 @@ public class FirstPersonController : MonoBehaviour
             StartCoroutine(CrouchStand());
     }
 
+    private void HandleHeadbob()
+    {
+        if (!characterController.isGrounded) return;
+
+        if(Mathf.Abs(moveDirection.x) > 0.1f || Mathf.Abs(moveDirection.z) > 0.1f)
+        {
+            timer += Time.deltaTime * (isCrouching ? crouchBobSpeed : IsSprinting ? sprintBobSpeed : walkBobSpeed);
+            playerCamera.transform.localPosition = new Vector3(
+                playerCamera.transform.localPosition.x,
+                defautYPos + Mathf.Sin(timer) * (isCrouching ? crouchBobSpeed : IsSprinting ? sprintBobSpeed : walkBobSpeed),
+                playerCamera.transform.localPosition.z);
+        }
+    }
+
     private void ApplyFineMovements()
     {
         if (!characterController.isGrounded)
             moveDirection.y -= gravity * Time.deltaTime;
+
+        if (WillSlideOnSlopes && IsSliding)
+            moveDirection += new Vector3(hitPointNormal.x, -hitPointNormal.y, hitPointNormal.z) * slopeSpeed;
 
         characterController.Move(moveDirection * Time.deltaTime);
     }
