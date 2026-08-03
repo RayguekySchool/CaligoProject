@@ -24,7 +24,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float walkSpeed = 3.0f;
     [SerializeField] private float sprintSpeed = 6.0f;
     [SerializeField] private float crouchSpeed = 1.5f;
-    [SerializeField] private float slopeSpeed = 1.5f;
+    [SerializeField] private float slopeSpeed = 8.0f;
 
     [Header("Jumping Parameters")]
     [SerializeField] private float jumpForce = 8.0f;
@@ -55,27 +55,22 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float sprintBobSpeed = 18f;
     [SerializeField] private float sprintBobAmout = 0.11f;
     [SerializeField] private float crouchBobSpeed = 8f;
-    [SerializeField] private float crouchBobAmout = 0.05f;
-    private float defautYPos = 0;
+    [SerializeField] private float crouchBobAmout = 0.025f;
     private float timer;
 
     // Sliding Parameters
-
     private Vector3 hitPointNormal;
 
     private bool IsSliding
     {
         get
         {
-            if (characterController.isGrounded && Physics.Raycast(transform.position, Vector3.down, out RaycastHit slopeHit, 2f))
+            if (characterController.isGrounded && Physics.Raycast(transform.position + Vector3.up * 0.5f, Vector3.down, out RaycastHit slopeHit, 2f))
             {
                 hitPointNormal = slopeHit.normal;
                 return Vector3.Angle(hitPointNormal, Vector3.up) > characterController.slopeLimit;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 
@@ -91,7 +86,6 @@ public class FirstPersonController : MonoBehaviour
     {
         playerCamera = GetComponentInChildren<Camera>();
         characterController = GetComponent<CharacterController>();
-        defautYPos = playerCamera.transform.localPosition.y;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -123,7 +117,8 @@ public class FirstPersonController : MonoBehaviour
 
     private void HandleMovementInput()
     {
-        currentInput = new Vector2((isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Vertical"), (isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Horizontal"));
+        float speed = isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed;
+        currentInput = new Vector2(speed * Input.GetAxis("Vertical"), speed * Input.GetAxis("Horizontal"));
 
         float moveDirectionY = moveDirection.y;
         moveDirection = (transform.TransformDirection(Vector3.forward) * currentInput.x) + (transform.TransformDirection(Vector3.right) * currentInput.y);
@@ -140,7 +135,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (ShouldJump)
+        if (ShouldJump && !IsSliding)
         {
             moveDirection.y = jumpForce;
         }
@@ -156,13 +151,28 @@ public class FirstPersonController : MonoBehaviour
     {
         if (!characterController.isGrounded) return;
 
-        if(Mathf.Abs(moveDirection.x) > 0.1f || Mathf.Abs(moveDirection.z) > 0.1f)
+        float targetBaseY = isCrouching ? crouchCameraHeight : standCameraHeight;
+
+        if (duringCrouchAnimation) return;
+
+        if (Mathf.Abs(currentInput.x) > 0.1f || Mathf.Abs(currentInput.y) > 0.1f)
         {
-            timer += Time.deltaTime * (isCrouching ? crouchBobSpeed : IsSprinting ? sprintBobSpeed : walkBobSpeed);
+            float bobSpeed = isCrouching ? crouchBobSpeed : IsSprinting ? sprintBobSpeed : walkBobSpeed;
+            float bobAmount = isCrouching ? crouchBobAmout : IsSprinting ? sprintBobAmout : walkBobAmout;
+
+            timer += Time.deltaTime * bobSpeed;
+
             playerCamera.transform.localPosition = new Vector3(
                 playerCamera.transform.localPosition.x,
-                defautYPos + Mathf.Sin(timer) * (isCrouching ? crouchBobSpeed : IsSprinting ? sprintBobSpeed : walkBobSpeed),
+                targetBaseY + Mathf.Sin(timer) * bobAmount,
                 playerCamera.transform.localPosition.z);
+        }
+        else
+        {
+            timer = 0;
+            Vector3 camPos = playerCamera.transform.localPosition;
+            camPos.y = Mathf.Lerp(camPos.y, targetBaseY, Time.deltaTime * 10f);
+            playerCamera.transform.localPosition = camPos;
         }
     }
 
@@ -172,7 +182,10 @@ public class FirstPersonController : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
 
         if (WillSlideOnSlopes && IsSliding)
-            moveDirection += new Vector3(hitPointNormal.x, -hitPointNormal.y, hitPointNormal.z) * slopeSpeed;
+        {
+            Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, hitPointNormal).normalized;
+            moveDirection += slideDirection * slopeSpeed * Time.deltaTime;
+        }
 
         characterController.Move(moveDirection * Time.deltaTime);
     }
@@ -217,7 +230,6 @@ public class FirstPersonController : MonoBehaviour
         playerCamera.transform.localPosition = finalCamPos;
 
         isCrouching = !isCrouching;
-
         duringCrouchAnimation = false;
     }
 }
