@@ -18,6 +18,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private bool willSlideOnSlopes = true;
     [SerializeField] private bool canZoom = true;
     [SerializeField] private bool canInteract = true;
+    [SerializeField] private bool useStamina = true;
 
     [Header("Controls")]
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
@@ -46,7 +47,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField, Range(1, 100)] private float upperLookLimit = 80.0f;
     [SerializeField, Range(1, 100)] private float lowerLookLimit = 80.0f;
 
-    [Header("Health Parameter")]
+    [Header("Health Parameters")]
     [SerializeField] private float maxHealth = 100;
     [SerializeField] private float timeBeforeRegenStarts = 3;
     [SerializeField] private float healthValueIncrement = 1;
@@ -56,6 +57,16 @@ public class FirstPersonController : MonoBehaviour
     public static Action <float> OnTakeDamage;
     public static Action <float> OnDamage;
     public static Action <float> OnHeal;
+
+    [Header("Stamina Parameters")]
+    [SerializeField] private float maxStamina = 100;
+    [SerializeField] private float staminaUseMultiplier = 5;
+    [SerializeField] private float timeBeforeStaminaRegenStarts = 5;
+    [SerializeField] private float staminaValueIncrement = 2;
+    [SerializeField] private float staminaTimeIncrement = 0.1f;
+    private float currentStamina;
+    private Coroutine regeneratingStamina;
+    public static Action<float> OnStaminaChange;
 
     [Header("Crouch Parameters")]
     [SerializeField] private float crouchHeight = 1.0f;
@@ -140,6 +151,7 @@ public class FirstPersonController : MonoBehaviour
 
         defaultFOV = playerCamera.fieldOfView;
         currentHealth = maxHealth;
+        currentStamina = maxStamina;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -168,6 +180,9 @@ public class FirstPersonController : MonoBehaviour
                 HandleInteractionCheck();
                 HandleInteractionInput();
             }
+
+            if (useStamina)
+                HandleStamina();
 
             ApplyFineMovements();
         }
@@ -227,6 +242,33 @@ public class FirstPersonController : MonoBehaviour
                 playerCamera.transform.localPosition.x,
                 Mathf.Lerp(playerCamera.transform.localPosition.y, defaultYPos, Time.deltaTime * 8f),
                 playerCamera.transform.localPosition.z);
+        }
+    }
+
+    private void HandleStamina()
+    {
+        if(IsSprinting && currentInput != Vector2.zero)
+        {
+            if(regeneratingStamina != null)
+            {
+                StopCoroutine(regeneratingStamina);
+                regeneratingStamina = null;
+            }
+
+            currentStamina -= staminaUseMultiplier * Time.deltaTime;
+
+            if (currentStamina < 0)
+                currentStamina = 0;
+
+            OnStaminaChange?.Invoke(currentStamina);
+
+            if(currentStamina <= 0)
+                canSprint = false;
+        }
+
+        if(!IsSprinting && currentStamina < maxStamina && regeneratingStamina == null)
+        {
+            regeneratingStamina = StartCoroutine((IEnumerator)RegenerateStamina());
         }
     }
 
@@ -388,5 +430,28 @@ public class FirstPersonController : MonoBehaviour
         }
 
         regeneratingHealth = null;
+    }
+
+    private IEnumerable RegenerateStamina()
+    {
+        yield return new WaitForSeconds(timeBeforeRegenStarts);
+        WaitForSeconds timeToWait = new WaitForSeconds(staminaTimeIncrement);
+
+        while(currentStamina < maxStamina)
+        {
+            if(currentStamina > 0)
+                canSprint = true;
+
+            currentStamina += staminaValueIncrement;
+
+            if(currentStamina > maxStamina)
+                currentStamina = maxStamina;
+
+            OnStaminaChange?.Invoke(currentStamina);
+
+            yield return timeToWait;
+        }
+
+        regeneratingStamina = null;
     }
 }
