@@ -268,7 +268,7 @@ public class FirstPersonController : MonoBehaviour
 
         if(!IsSprinting && currentStamina < maxStamina && regeneratingStamina == null)
         {
-            regeneratingStamina = StartCoroutine((IEnumerator)RegenerateStamina());
+            regeneratingStamina = StartCoroutine(RegenerateStamina());
         }
     }
 
