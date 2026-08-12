@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.DualShock.LowLevel;
 
 public class FirstPersonController : MonoBehaviour
 {
@@ -20,11 +19,15 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private bool canInteract = true;
     [SerializeField] private bool useStamina = true;
 
+    [Header("Regeneration Options")]
+    [SerializeField] private bool canRegenHealth = true;
+    [SerializeField] private bool canRegenStamina = true;
+
     [Header("Controls")]
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode crouchKey = KeyCode.LeftControl;
-    [SerializeField] private KeyCode interactionKey = KeyCode.Mouse0;
+    [SerializeField] private KeyCode interactionKey = KeyCode.E;
     [SerializeField] private KeyCode zoomKey = KeyCode.Mouse1;
 
     [Header("Movement Parameters")]
@@ -54,9 +57,9 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float healthTimeIncrement = 0.1f;
     private float currentHealth;
     private Coroutine regeneratingHealth;
-    public static Action <float> OnTakeDamage;
-    public static Action <float> OnDamage;
-    public static Action <float> OnHeal;
+    public static Action<float> OnTakeDamage;
+    public static Action<float> OnDamage;
+    public static Action<float> OnHeal;
 
     [Header("Stamina Parameters")]
     [SerializeField] private float maxStamina = 100;
@@ -90,7 +93,6 @@ public class FirstPersonController : MonoBehaviour
     [Header("Zoom Parameters")]
     [SerializeField] private float timeToZoom = 0.3f;
     [SerializeField] private float zoomFOV = 30f;
-    private float defautFOV;
     private Coroutine zoomRoutine;
 
     // SLIDING PARAMETERS
@@ -151,9 +153,9 @@ public class FirstPersonController : MonoBehaviour
         if (playerCamera != null)
         {
             defaultYPos = playerCamera.transform.localPosition.y;
+            defaultFOV = playerCamera.fieldOfView;
         }
 
-        defaultFOV = playerCamera.fieldOfView;
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         Cursor.lockState = CursorLockMode.Locked;
@@ -251,9 +253,9 @@ public class FirstPersonController : MonoBehaviour
 
     private void HandleStamina()
     {
-        if(IsSprinting && currentInput != Vector2.zero)
+        if (IsSprinting && currentInput != Vector2.zero)
         {
-            if(regeneratingStamina != null)
+            if (regeneratingStamina != null)
             {
                 StopCoroutine(regeneratingStamina);
                 regeneratingStamina = null;
@@ -266,13 +268,14 @@ public class FirstPersonController : MonoBehaviour
 
             OnStaminaChange?.Invoke(currentStamina);
 
-            if(currentStamina <= 0)
+            if (currentStamina <= 0)
                 canSprint = false;
         }
 
-        if(!IsSprinting && currentStamina < maxStamina && regeneratingStamina == null)
+        // Adicionada a checagem do canRegenStamina
+        if (!IsSprinting && currentStamina < maxStamina && regeneratingStamina == null && canRegenStamina)
         {
-            regeneratingStamina = StartCoroutine((IEnumerator)RegenerateStamina());
+            regeneratingStamina = StartCoroutine(RegenerateStamina());
         }
     }
 
@@ -280,13 +283,13 @@ public class FirstPersonController : MonoBehaviour
     {
         if (Input.GetKeyDown(zoomKey))
         {
-            if(zoomRoutine != null)
+            if (zoomRoutine != null)
             {
                 StopCoroutine(zoomRoutine);
                 zoomRoutine = null;
             }
 
-            zoomRoutine = StartCoroutine((IEnumerator)ToggleZoom(true));
+            zoomRoutine = StartCoroutine(ToggleZoom(true));
         }
 
         if (Input.GetKeyUp(zoomKey))
@@ -297,15 +300,15 @@ public class FirstPersonController : MonoBehaviour
                 zoomRoutine = null;
             }
 
-            zoomRoutine = StartCoroutine((IEnumerator)ToggleZoom(false));
+            zoomRoutine = StartCoroutine(ToggleZoom(false));
         }
     }
 
     private void HandleInteractionCheck()
     {
-        if(Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance))
+        if (Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance))
         {
-            if(hit.collider.gameObject.layer == 10 && currentInteractable == null)
+            if (hit.collider.gameObject.layer == 10 && currentInteractable == null)
             {
                 hit.collider.TryGetComponent(out currentInteractable);
 
@@ -322,7 +325,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void HandleInteractionInput()
     {
-        if (Input.GetKeyDown(interactionKey) && currentInteractable != null && Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer)) 
+        if (Input.GetKeyDown(interactionKey) && currentInteractable != null && Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer))
         {
             currentInteractable.OnInteract();
         }
@@ -334,11 +337,16 @@ public class FirstPersonController : MonoBehaviour
         OnDamage?.Invoke(currentHealth);
 
         if (currentHealth <= 0)
+        {
             KillPlayer();
-        else if (currentHealth != null)
-            StopCoroutine(regeneratingHealth);
+        }
+        else if (canRegenHealth)
+        {
+            if (regeneratingHealth != null)
+                StopCoroutine(regeneratingHealth);
 
-        regeneratingHealth = StartCoroutine((IEnumerator)RegenerateHealth());
+            regeneratingHealth = StartCoroutine(RegenerateHealth());
+        }
     }
 
     private void KillPlayer()
@@ -400,13 +408,13 @@ public class FirstPersonController : MonoBehaviour
         duringCrouchAnimation = false;
     }
 
-    private IEnumerable ToggleZoom(bool isEnter)
+    private IEnumerator ToggleZoom(bool isEnter)
     {
         float targetFOV = isEnter ? zoomFOV : defaultFOV;
         float startingFOV = playerCamera.fieldOfView;
         float timeElapsed = 0;
 
-        while(timeElapsed < timeToZoom)
+        while (timeElapsed < timeToZoom)
         {
             playerCamera.fieldOfView = Mathf.Lerp(startingFOV, targetFOV, timeElapsed / timeToZoom);
             timeElapsed += Time.deltaTime;
@@ -417,16 +425,16 @@ public class FirstPersonController : MonoBehaviour
         zoomRoutine = null;
     }
 
-    private IEnumerable RegenerateHealth()
+    private IEnumerator RegenerateHealth()
     {
         yield return new WaitForSeconds(timeBeforeRegenStarts);
         WaitForSeconds timeToWait = new WaitForSeconds(healthTimeIncrement);
 
-        while(currentHealth < maxHealth)
+        while (currentHealth < maxHealth)
         {
             currentHealth += healthValueIncrement;
 
-            if(currentHealth > maxHealth)
+            if (currentHealth > maxHealth)
                 currentHealth = maxHealth;
 
             OnHeal?.Invoke(currentHealth);
@@ -436,19 +444,19 @@ public class FirstPersonController : MonoBehaviour
         regeneratingHealth = null;
     }
 
-    private IEnumerable RegenerateStamina()
+    private IEnumerator RegenerateStamina()
     {
-        yield return new WaitForSeconds(timeBeforeRegenStarts);
+        yield return new WaitForSeconds(timeBeforeStaminaRegenStarts);
         WaitForSeconds timeToWait = new WaitForSeconds(staminaTimeIncrement);
 
-        while(currentStamina < maxStamina)
+        while (currentStamina < maxStamina)
         {
-            if(currentStamina > 0)
+            if (currentStamina > 0)
                 canSprint = true;
 
             currentStamina += staminaValueIncrement;
 
-            if(currentStamina > maxStamina)
+            if (currentStamina > maxStamina)
                 currentStamina = maxStamina;
 
             OnStaminaChange?.Invoke(currentStamina);
