@@ -4,14 +4,14 @@ using System.Collections;
 
 public class PistolCanvasGun : MonoBehaviour
 {
-    [Header("Pistol config")]
+    [Header("Pistol Config")]
     public Animator animator;
     public float range = 100f;
     public Camera fpsCam;
     public string bulletType = "Pistol";
     public float fireRate = 0.5f;
 
-    [Header("ammo")]
+    [Header("Ammo")]
     public int maxAmmo = 12;
     public int reserveAmmo = 36;
     private int currentAmmo;
@@ -19,11 +19,14 @@ public class PistolCanvasGun : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI ammoText;
 
-    [Header("audio")]
+    [Header("Audio")]
     public AudioSource p_shootSound;
 
-    [Header("reload")]
+    [Header("Reload")]
     public float reloadTime = 1.5f;
+
+    private static readonly int ShootTrigger = Animator.StringToHash("ShootPistol");
+    private static readonly int ReloadBool = Animator.StringToHash("ReloadPistol");
 
     private float nextTimeToFire = 0f;
     private bool isReloading = false;
@@ -32,6 +35,7 @@ public class PistolCanvasGun : MonoBehaviour
     void Start()
     {
         currentAmmo = maxAmmo;
+
         if (ammoText != null)
             ammoText.gameObject.SetActive(false);
 
@@ -44,11 +48,10 @@ public class PistolCanvasGun : MonoBehaviour
 
     void Update()
     {
-        if (isReloading)
-        {
-            if (animator != null) animator.SetBool("ShootPistol", false);
+        if (isReloading) return;
+
+        if (FirstPersonController.instance != null && !FirstPersonController.instance.CanMove)
             return;
-        }
 
         if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && reserveAmmo > 0)
         {
@@ -56,35 +59,24 @@ public class PistolCanvasGun : MonoBehaviour
             return;
         }
 
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0)
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && currentAmmo > 0)
         {
             nextTimeToFire = Time.time + fireRate;
             Shoot();
-        }
-        else
-        {
-            if (animator != null)
-            {
-                animator.SetBool("ShootPistol", false);
-                animator.SetBool("ReloadPistol", false);
-            }
         }
     }
 
     void Shoot()
     {
         currentAmmo--;
+
         if (animator != null)
         {
-            animator.SetBool("ShootPistol", true);
-            animator.SetBool("ReloadPistol", false);
-            animator.SetTrigger("ShootPistol");
+            animator.SetTrigger(ShootTrigger);
         }
 
         if (p_shootSound != null)
             p_shootSound.Play();
-        else
-            Debug.Log("[PistolaCanvasGun] p_shootSound == null");
 
         if (!hasShotOnce)
         {
@@ -95,51 +87,20 @@ public class PistolCanvasGun : MonoBehaviour
 
         UpdateAmmoUI();
 
-        if (fpsCam == null)
-        {
-            Debug.LogWarning("[PistolaCanvasGun] fpsCam é null — defina a câmera no inspector.");
-            return;
-        }
+        if (fpsCam == null) return;
 
         Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        Debug.DrawRay(ray.origin, ray.direction * range, Color.red, 1f);
 
         if (Physics.Raycast(ray, out RaycastHit hit, range))
         {
-            string hitName = hit.transform.name;
-            Debug.Log($"[PistolaCanvasGun] Raycast acertou: {hitName} a {hit.distance:F2}m (collider: {hit.collider.name})");
-
-            EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
-            string foundOn = "self";
-            if (enemy == null)
-            {
-                enemy = hit.transform.GetComponentInParent<EnemyHealth>();
-                if (enemy != null) foundOn = "parent";
-            }
-            if (enemy == null)
-            {
-                enemy = hit.transform.GetComponentInChildren<EnemyHealth>();
-                if (enemy != null) foundOn = "children";
-            }
-            if (enemy == null && hit.rigidbody != null)
-            {
-                enemy = hit.rigidbody.GetComponent<EnemyHealth>();
-                if (enemy != null) foundOn = "rigidbody";
-            }
+            EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>() ??
+                                hit.transform.GetComponentInParent<EnemyHealth>() ??
+                                hit.transform.GetComponentInChildren<EnemyHealth>();
 
             if (enemy != null)
             {
-                Debug.Log($"[PistolaCanvasGun] Encontrado EnemyHealth ({foundOn}) em '{enemy.gameObject.name}'. Chamando TakeBullet({bulletType}).");
                 enemy.TakeBullet(bulletType);
             }
-            else
-            {
-                Debug.Log($"[PistolaCanvasGun] Não foi encontrado EnemyHealth no objeto atingido ({hitName}). Verifique se o componente está no mesmo GameObject ou em parents/children.");
-            }
-        }
-        else
-        {
-            Debug.Log("[PistolaCanvasGun] Raycast não acertou nada.");
         }
     }
 
@@ -154,10 +115,7 @@ public class PistolCanvasGun : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("ShootPistol", false);
-            animator.SetBool("ReloadPistol", true);
-            animator.ResetTrigger("ShootPistol");
-            animator.SetTrigger("ReloadPistol");
+            animator.SetBool(ReloadBool, true);
         }
 
         yield return new WaitForSeconds(reloadTime);
@@ -171,7 +129,9 @@ public class PistolCanvasGun : MonoBehaviour
         UpdateAmmoUI();
 
         if (animator != null)
-            animator.SetBool("ReloadPistol", false);
+        {
+            animator.SetBool(ReloadBool, false);
+        }
 
         isReloading = false;
     }
