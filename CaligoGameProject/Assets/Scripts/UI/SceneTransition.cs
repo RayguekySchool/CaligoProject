@@ -5,6 +5,6 @@ public class SceneTransition : MonoBehaviour
 {
     public void LoadScene(int i)
     {
-        SceneManager.LoadScene(i);
+        SceneController.LoadScene(i, 1, 2);
     }
 }
