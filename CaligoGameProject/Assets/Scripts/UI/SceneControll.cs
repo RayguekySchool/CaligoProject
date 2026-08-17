@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System;
 
 public class SceneController : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class SceneController : MonoBehaviour
 
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -31,16 +30,11 @@ public class SceneController : MonoBehaviour
         instance.StartCoroutine(instance.FadeScene(index, duration, waitTime));
     }
 
-    private void StartCoroutine(IEnumerable enumerable)
-    {
-        throw new NotImplementedException();
-    }
-
-    private IEnumerable FadeScene(int index, float duration, float waitTime)
+    private IEnumerator FadeScene(int index, float duration, float waitTime)
     {
         fader.gameObject.SetActive(true);
 
-        for(float t = 0; t < 1; t+= Time.deltaTime / duration)
+        for (float t = 0; t < 1; t += Time.deltaTime / duration)
         {
             fader.color = new Color(0, 0, 0, Mathf.Lerp(0, 1, t));
             yield return null;
@@ -48,7 +42,7 @@ public class SceneController : MonoBehaviour
 
         AsyncOperation ao = SceneManager.LoadSceneAsync(index);
 
-        while(!ao.isDone)
+        while (!ao.isDone)
             yield return null;
 
         yield return new WaitForSeconds(waitTime);
