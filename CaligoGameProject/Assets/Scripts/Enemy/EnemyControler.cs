@@ -6,7 +6,7 @@ public class EnemyControler : MonoBehaviour
 {
     private PlayerMove player;
     private NavMeshAgent nav;
-    public Animator animator; // Animator reference
+    public Animator animator;
     private Coroutine damageCoroutine;
 
     [System.Obsolete]
@@ -14,7 +14,7 @@ public class EnemyControler : MonoBehaviour
     {
         player = FindObjectOfType<PlayerMove>();
         nav = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>(); // Get Animator component
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -23,14 +23,12 @@ public class EnemyControler : MonoBehaviour
         {
             nav.SetDestination(player.transform.position);
 
-            // Check if enemy is moving
             bool isMoving = nav.velocity.magnitude > 0.1f;
             if (animator != null)
-                animator.SetBool("isWalking", isMoving); // Trigger walking animation
+                animator.SetBool("isWalking", isMoving);
         }
     }
 
-    // These need to be class-level methods so Unity can call them
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

@@ -765,6 +765,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5a2366dda2d464d96fd8ff4f32b177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactabletest
+--- !u!20 &512329178 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5710162240923075000, guid: c9f5aee8af3a18a4097aecdeae6f586c, type: 3}
+  m_PrefabInstance: {fileID: 4896697667616811697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &548872907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1530,13 +1535,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 665046480175283027, guid: 0c26f251be6f203488af568426f1ac9f, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 512329178}
     - target: {fileID: 3632752719777104272, guid: 0c26f251be6f203488af568426f1ac9f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.6842527
       objectReference: {fileID: 0}
     - target: {fileID: 3632752719777104272, guid: 0c26f251be6f203488af568426f1ac9f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000020256158
+      value: -0.035
       objectReference: {fileID: 0}
     - target: {fileID: 3632752719777104272, guid: 0c26f251be6f203488af568426f1ac9f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4975,6 +4984,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 538388875448310880, guid: c9f5aee8af3a18a4097aecdeae6f586c, type: 3}
+      propertyPath: canRegenHealth
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2409121180431260543, guid: c9f5aee8af3a18a4097aecdeae6f586c, type: 3}
       propertyPath: m_Name
       value: FirstPersonController
