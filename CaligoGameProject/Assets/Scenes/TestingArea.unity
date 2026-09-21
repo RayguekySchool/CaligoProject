@@ -362,7 +362,10 @@ Transform:
   m_LocalPosition: {x: -58.65924, y: -0, z: 16.09418}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1222553791}
+  - {fileID: 938370314}
+  - {fileID: 1003908157}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &332050274
@@ -2008,12 +2011,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938370310}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -58.702, y: 1.0405, z: 16.136}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.04275894, y: 1.0405, z: 0.041820526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 227528111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &938370315
 Animator:
@@ -2311,12 +2314,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1003908153}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -58.69693, y: 1.22212, z: 16.136}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.03768921, y: 1.22212, z: 0.041820526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 227528111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1003908158
 Animator:
@@ -3321,7 +3324,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 227528111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1222553792
 Animator:
@@ -5971,6 +5974,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 538388875448310880, guid: c9f5aee8af3a18a4097aecdeae6f586c, type: 3}
+      propertyPath: sprintSpeed
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 538388875448310880, guid: c9f5aee8af3a18a4097aecdeae6f586c, type: 3}
       propertyPath: canRegenHealth
       value: 1
       objectReference: {fileID: 0}
@@ -6999,8 +7006,5 @@ SceneRoots:
   - {fileID: 1619905141}
   - {fileID: 8601696701654141529}
   - {fileID: 227528111}
-  - {fileID: 1222553791}
-  - {fileID: 938370314}
-  - {fileID: 1003908157}
   - {fileID: 554077687}
   - {fileID: 3632752718965278239}

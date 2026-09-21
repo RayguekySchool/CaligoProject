@@ -82,6 +82,7 @@ public class ZombieAI : MonoBehaviour
         isDead = true;
         Agent.isStopped = true;
         anim.SetBool("isWalking", false);
+        anim.SetTrigger("dead");
         Destroy(gameObject, 3f);
-    })
+    }
 }
