@@ -37,7 +37,10 @@ public class PistolCanvasGun : MonoBehaviour
         currentAmmo = maxAmmo;
 
         if (ammoText != null)
+        {
             ammoText.gameObject.SetActive(false);
+            UpdateAmmoUI();
+        }
 
         if (p_shootSound == null)
             p_shootSound = GetComponent<AudioSource>();
@@ -139,6 +142,8 @@ public class PistolCanvasGun : MonoBehaviour
     void UpdateAmmoUI()
     {
         if (ammoText != null)
-            ammoText.text = $"{currentAmmo}";
+        {
+            ammoText.text = $"{currentAmmo} / {reserveAmmo}";
+        }
     }
 }
