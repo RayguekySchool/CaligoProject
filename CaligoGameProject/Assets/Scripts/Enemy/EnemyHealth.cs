@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -8,12 +9,13 @@ public class EnemyHealth : MonoBehaviour
     public class BulletResistance
     {
         public string bulletType;
-        public int bulletsToKill;
+        public int bulletsToKill = 5;
         public int kills;
     }
 
     public ParticleSystem deathParticles;
-    public List<BulletResistance> resistances;
+    public List<BulletResistance> resistances = new List<BulletResistance>();
+
     private Dictionary<string, int> bulletHits = new Dictionary<string, int>();
 
     public static int kills1 = 0;
@@ -21,46 +23,69 @@ public class EnemyHealth : MonoBehaviour
 
     [SerializeField] private HealthBarCanva healthBar;
     [SerializeField] private float maxHealth = 100f;
-    private float health;
 
-    private Rigidbody rb;
+    private float health;
+    private bool isDead = false;
 
     public event Action OnDeath;
 
-    // Adicione um campo para identificar qual killCounter atualizar
-    [SerializeField] private int killCounterIndex = 1; // 1 ou 2
+    [SerializeField] private int killCounterIndex = 1;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
         healthBar = GetComponentInChildren<HealthBarCanva>();
         health = maxHealth;
-    }
 
-    void Start()
-    {
         foreach (var res in resistances)
         {
-            bulletHits[res.bulletType] = 0;
+            if (res != null && !string.IsNullOrEmpty(res.bulletType))
+            {
+                bulletHits[res.bulletType] = 0;
+            }
         }
-        healthBar.UpdateHealthBar(health, maxHealth);
+    }
+
+    private void Start()
+    {
+        if (healthBar != null)
+        {
+            healthBar.UpdateHealthBar(health, maxHealth);
+        }
+        else
+        {
+            Debug.LogWarning(
+                $"[{name}] HealthBarCanva não foi encontrado nos filhos.",
+                this
+            );
+        }
     }
 
     public void TakeBullet(string bulletType)
     {
-        if (!bulletHits.ContainsKey(bulletType)) return;
+        if (isDead || string.IsNullOrEmpty(bulletType))
+            return;
+
+        if (!bulletHits.ContainsKey(bulletType))
+            return;
+
+        BulletResistance resistance =
+            resistances.Find(x => x != null && x.bulletType == bulletType);
+
+        if (resistance == null || resistance.bulletsToKill <= 0)
+            return;
 
         bulletHits[bulletType]++;
-        int needed = resistances.Find(x => x.bulletType == bulletType).bulletsToKill;
 
-        // Reduce health based on bullet type (example: each bullet reduces by maxHealth / bulletsToKill)
-        float damage = maxHealth / needed;
-        health -= damage;
-        health = Mathf.Clamp(health, 0, maxHealth);
+        float damage = maxHealth / resistance.bulletsToKill;
+        health = Mathf.Clamp(health - damage, 0f, maxHealth);
 
-        healthBar.UpdateHealthBar(health, maxHealth);
+        if (healthBar != null)
+        {
+            healthBar.UpdateHealthBar(health, maxHealth);
+        }
 
-        if (bulletHits[bulletType] >= needed || health <= 0)
+        if (bulletHits[bulletType] >= resistance.bulletsToKill ||
+            health <= 0f)
         {
             Die();
         }
@@ -68,42 +93,41 @@ public class EnemyHealth : MonoBehaviour
 
     public void Die()
     {
-        // Atualiza contador de kills com checagem null no UImanager
+        // Impede que a morte e o contador sejam executados duas vezes.
+        if (isDead)
+            return;
+
+        isDead = true;
+
+        // Atualiza o contador de eliminações.
         if (killCounterIndex == 1)
         {
             kills1++;
+
             if (UImanager.instance != null)
                 UImanager.instance.UpdateKillCounter1(kills1);
-            else
-                Debug.LogWarning("[EnemyHealth] UImanager.instance is null — kill counter not updated.");
         }
-        else
+        else if (killCounterIndex == 2)
         {
             kills2++;
+
             if (UImanager.instance != null)
                 UImanager.instance.UpdateKillCounter2(kills2);
-            else
-                Debug.LogWarning("[EnemyHealth] UImanager.instance is null — kill counter not updated.");
         }
 
-        // Notifica assinantes (se houver)
-        try
-        {
-            OnDeath?.Invoke();
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError("[EnemyHealth] Exception in OnDeath invoke: " + ex);
-        }
+        // Avisa o ZombieAI antes de destruir o objeto.
+        OnDeath?.Invoke();
 
-        // Instancia partículas se houver
+        // Cria as partículas de morte.
         if (deathParticles != null)
         {
-            Instantiate(deathParticles, transform.position, Quaternion.identity);
+            Instantiate(
+                deathParticles,
+                transform.position,
+                Quaternion.identity
+            );
         }
 
-        // Finalmente destrói o GameObject
         Destroy(gameObject);
     }
-
 }
