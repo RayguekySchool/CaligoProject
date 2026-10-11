@@ -37,6 +37,15 @@ public class ZombieAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         enemyHealth = GetComponent<EnemyHealth>();
+
+        if (agent == null)
+            Debug.LogError($"[{name}] NavMeshAgent não encontrado!", this);
+
+        if (animator == null)
+            Debug.LogError($"[{name}] Animator não encontrado!", this);
+
+        if (enemyHealth == null)
+            Debug.LogError($"[{name}] EnemyHealth não encontrado!", this);
     }
 
     private void Start()

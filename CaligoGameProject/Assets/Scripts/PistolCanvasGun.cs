@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -25,8 +26,14 @@ public class PistolCanvasGun : MonoBehaviour
     [Header("Reload")]
     public float reloadTime = 1.5f;
 
-    private static readonly int ShootTrigger = Animator.StringToHash("ShootPistol");
-    private static readonly int ReloadBool = Animator.StringToHash("ReloadPistol");
+    [Header("Shooting Visual Effect")]
+    public RenderingShootingEffect shootingEffect;
+
+    private static readonly int ShootTrigger =
+        Animator.StringToHash("ShootPistol");
+
+    private static readonly int ReloadBool =
+        Animator.StringToHash("ReloadPistol");
 
     private float nextTimeToFire = 0f;
     private bool isReloading = false;
@@ -53,16 +60,21 @@ public class PistolCanvasGun : MonoBehaviour
     {
         if (isReloading) return;
 
-        if (FirstPersonController.instance != null && !FirstPersonController.instance.CanMove)
+        if (FirstPersonController.instance != null &&
+            !FirstPersonController.instance.CanMove)
             return;
 
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && reserveAmmo > 0)
+        if (Input.GetKeyDown(KeyCode.R) &&
+            currentAmmo < maxAmmo &&
+            reserveAmmo > 0)
         {
             StartCoroutine(Reload());
             return;
         }
 
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && currentAmmo > 0)
+        if (Input.GetMouseButtonDown(0) &&
+            Time.time >= nextTimeToFire &&
+            currentAmmo > 0)
         {
             nextTimeToFire = Time.time + fireRate;
             Shoot();
@@ -73,17 +85,29 @@ public class PistolCanvasGun : MonoBehaviour
     {
         currentAmmo--;
 
+        // Ativa o efeito visual a cada disparo.
+        if (shootingEffect != null)
+        {
+            shootingEffect.PlayShootingFlash();
+        }
+
+        // Animação de disparo.
         if (animator != null)
         {
             animator.SetTrigger(ShootTrigger);
         }
 
+        // Som do disparo.
         if (p_shootSound != null)
+        {
             p_shootSound.Play();
+        }
 
+        // Exibe a munição após o primeiro disparo.
         if (!hasShotOnce)
         {
             hasShotOnce = true;
+
             if (ammoText != null)
                 ammoText.gameObject.SetActive(true);
         }
@@ -92,13 +116,16 @@ public class PistolCanvasGun : MonoBehaviour
 
         if (fpsCam == null) return;
 
-        Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Ray ray = fpsCam.ViewportPointToRay(
+            new Vector3(0.5f, 0.5f, 0f)
+        );
 
         if (Physics.Raycast(ray, out RaycastHit hit, range))
         {
-            EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>() ??
-                                hit.transform.GetComponentInParent<EnemyHealth>() ??
-                                hit.transform.GetComponentInChildren<EnemyHealth>();
+            EnemyHealth enemy =
+                hit.transform.GetComponent<EnemyHealth>() ??
+                hit.transform.GetComponentInParent<EnemyHealth>() ??
+                hit.transform.GetComponentInChildren<EnemyHealth>();
 
             if (enemy != null)
             {

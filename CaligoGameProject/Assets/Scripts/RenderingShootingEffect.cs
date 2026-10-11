@@ -1,4 +1,6 @@
+
 using UnityEngine;
+using System.Collections;
 
 public class RenderingShootingEffect : MonoBehaviour
 {
@@ -8,27 +10,53 @@ public class RenderingShootingEffect : MonoBehaviour
     [SerializeField] private GameObject targetShaderCanvas;
     [SerializeField] private PistolCanvasGun pistolaCanvasGun;
 
-    [Header("Settings")]
-    [SerializeField] public bool StartWithTextureOn = false;
+    [Header("Flash Settings")]
+    [SerializeField] private float flashDuration = 0.7f;
+    [SerializeField] private float fadeInDuration = 0.08f;
+    [SerializeField] private float fadeOutDuration = 0.2f;
 
     private bool isTextureActive;
+    private Coroutine flashCoroutine;
 
     private void Start()
     {
         if (targetCamera == null)
-        {
             targetCamera = Camera.main;
-        }
 
-        SetRenderTextureState(StartWithTextureOn);
+        if (pistolaCanvasGun == null)
+            pistolaCanvasGun = FindObjectOfType<PistolCanvasGun>();
+
+        SetRenderTextureState(false);
     }
 
-    private void Update()
+    public void PlayShootingFlash()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ToggleRenderTexture();
-        }
+        if (flashCoroutine != null)
+            StopCoroutine(flashCoroutine);
+
+        flashCoroutine = StartCoroutine(ShootingFlashRoutine());
+    }
+
+    private IEnumerator ShootingFlashRoutine()
+    {
+        SetRenderTextureState(true);
+
+        // Fade-in rápido
+        yield return new WaitForSeconds(fadeInDuration);
+
+        // Mantém o efeito visível durante o restante do flash
+        float holdDuration = Mathf.Max(
+            0f,
+            flashDuration - fadeInDuration - fadeOutDuration
+        );
+
+        yield return new WaitForSeconds(holdDuration);
+
+        // Fade-out
+        yield return new WaitForSeconds(fadeOutDuration);
+
+        SetRenderTextureState(false);
+        flashCoroutine = null;
     }
 
     public void ToggleRenderTexture()
@@ -42,16 +70,13 @@ public class RenderingShootingEffect : MonoBehaviour
 
         if (targetCamera != null)
         {
-            targetCamera.targetTexture = activateTexture ? renderTexture : null;
+            targetCamera.targetTexture =
+                activateTexture ? renderTexture : null;
         }
 
         if (targetShaderCanvas != null)
         {
             targetShaderCanvas.SetActive(activateTexture);
-        }
-        else
-        {
-            Debug.LogWarning("CameraTextureCanvasToggler: No Canvas GameObject assigned!");
         }
     }
 }

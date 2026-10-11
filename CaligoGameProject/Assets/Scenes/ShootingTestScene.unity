@@ -5854,7 +5854,7 @@ GameObject:
   - component: {fileID: 7292455552025998692}
   m_Layer: 0
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6186,6 +6186,7 @@ MonoBehaviour:
   ammoText: {fileID: 3398019322464139490}
   p_shootSound: {fileID: 0}
   reloadTime: 1.35
+  shootingEffect: {fileID: 7510782485227819149}
 --- !u!1 &4556638366964989505
 GameObject:
   m_ObjectHideFlags: 0
@@ -7496,7 +7497,9 @@ MonoBehaviour:
   renderTexture: {fileID: 8400000, guid: e9d4e551784534448a8eb9c6009d8d65, type: 2}
   targetShaderCanvas: {fileID: 3478243843668010235}
   pistolaCanvasGun: {fileID: 4479086038690823343}
-  StartWithTextureOn: 0
+  flashDuration: 0.7
+  fadeInDuration: 0.08
+  fadeOutDuration: 0.2
 --- !u!1 &7599559230433092486
 GameObject:
   m_ObjectHideFlags: 0
