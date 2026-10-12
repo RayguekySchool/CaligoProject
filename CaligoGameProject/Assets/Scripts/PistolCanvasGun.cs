@@ -85,25 +85,21 @@ public class PistolCanvasGun : MonoBehaviour
     {
         currentAmmo--;
 
-        // Ativa o efeito visual a cada disparo.
         if (shootingEffect != null)
         {
             shootingEffect.PlayShootingFlash();
         }
 
-        // Animação de disparo.
         if (animator != null)
         {
             animator.SetTrigger(ShootTrigger);
         }
 
-        // Som do disparo.
         if (p_shootSound != null)
         {
             p_shootSound.Play();
         }
 
-        // Exibe a munição após o primeiro disparo.
         if (!hasShotOnce)
         {
             hasShotOnce = true;
