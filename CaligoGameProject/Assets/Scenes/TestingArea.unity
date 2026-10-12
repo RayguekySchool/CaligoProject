@@ -2201,11 +2201,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2cfbe4741d21ce478d07966c786df62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieAI
-  health: 100
-  Player: {fileID: 4896697667616811698}
+  currentState: 0
   detectionRange: 10
-  attackDistance: 3
-  attackInterval: 2
+  attackRange: 2.5
+  biteRange: 1.8
+  walkSpeed: 1.2
+  attackDamage: 10
+  biteDamage: 25
+  attackRate: 1.5
+  biteRate: 2.5
 --- !u!1 &1003908153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4427,6 +4431,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5a2366dda2d464d96fd8ff4f32b177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactabletest
+--- !u!1001 &1843811521
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
+      propertyPath: m_Name
+      value: MansionZombie
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1db427211dbbd2e42a552e2f32463e3d, type: 3}
 --- !u!1 &1968997471
 GameObject:
   m_ObjectHideFlags: 0
@@ -6030,11 +6103,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9f5aee8af3a18a4097aecdeae6f586c, type: 3}
---- !u!4 &4896697667616811698 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8353844556391542963, guid: c9f5aee8af3a18a4097aecdeae6f586c, type: 3}
-  m_PrefabInstance: {fileID: 4896697667616811697}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4953926927509311924
 Transform:
   m_ObjectHideFlags: 0
@@ -7008,3 +7076,4 @@ SceneRoots:
   - {fileID: 227528111}
   - {fileID: 554077687}
   - {fileID: 3632752718965278239}
+  - {fileID: 1843811521}
