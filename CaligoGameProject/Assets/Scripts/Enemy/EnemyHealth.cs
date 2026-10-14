@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -8,7 +7,7 @@ public class EnemyHealth : MonoBehaviour
     [System.Serializable]
     public class BulletResistance
     {
-        public string bulletType;
+        public string bulletType = "Pistol";
         public int bulletsToKill = 5;
         public int kills;
     }
@@ -23,6 +22,7 @@ public class EnemyHealth : MonoBehaviour
 
     [SerializeField] private HealthBarCanva healthBar;
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float destroyDelay = 1.5f;
 
     private float health;
     private bool isDead = false;
@@ -51,13 +51,6 @@ public class EnemyHealth : MonoBehaviour
         {
             healthBar.UpdateHealthBar(health, maxHealth);
         }
-        else
-        {
-            Debug.LogWarning(
-                $"[{name}] HealthBarCanva não foi encontrado nos filhos.",
-                this
-            );
-        }
     }
 
     public void TakeBullet(string bulletType)
@@ -65,27 +58,28 @@ public class EnemyHealth : MonoBehaviour
         if (isDead || string.IsNullOrEmpty(bulletType))
             return;
 
-        if (!bulletHits.ContainsKey(bulletType))
-            return;
-
-        BulletResistance resistance =
-            resistances.Find(x => x != null && x.bulletType == bulletType);
+        BulletResistance resistance = resistances.Find(x => x != null && x.bulletType.Equals(bulletType, StringComparison.OrdinalIgnoreCase));
 
         if (resistance == null || resistance.bulletsToKill <= 0)
-            return;
+        {
+            health = Mathf.Clamp(health - (maxHealth / 5f), 0f, maxHealth);
+        }
+        else
+        {
+            if (!bulletHits.ContainsKey(resistance.bulletType))
+                bulletHits[resistance.bulletType] = 0;
 
-        bulletHits[bulletType]++;
-
-        float damage = maxHealth / resistance.bulletsToKill;
-        health = Mathf.Clamp(health - damage, 0f, maxHealth);
+            bulletHits[resistance.bulletType]++;
+            float damage = maxHealth / resistance.bulletsToKill;
+            health = Mathf.Clamp(health - damage, 0f, maxHealth);
+        }
 
         if (healthBar != null)
         {
             healthBar.UpdateHealthBar(health, maxHealth);
         }
 
-        if (bulletHits[bulletType] >= resistance.bulletsToKill ||
-            health <= 0f)
+        if (health <= 0f)
         {
             Die();
         }
@@ -93,41 +87,33 @@ public class EnemyHealth : MonoBehaviour
 
     public void Die()
     {
-        // Impede que a morte e o contador sejam executados duas vezes.
-        if (isDead)
-            return;
-
+        if (isDead) return;
         isDead = true;
 
-        // Atualiza o contador de eliminações.
         if (killCounterIndex == 1)
         {
             kills1++;
-
-            if (UImanager.instance != null)
-                UImanager.instance.UpdateKillCounter1(kills1);
+            if (UImanager.instance != null) UImanager.instance.UpdateKillCounter1(kills1);
         }
         else if (killCounterIndex == 2)
         {
             kills2++;
-
-            if (UImanager.instance != null)
-                UImanager.instance.UpdateKillCounter2(kills2);
+            if (UImanager.instance != null) UImanager.instance.UpdateKillCounter2(kills2);
         }
 
-        // Avisa o ZombieAI antes de destruir o objeto.
         OnDeath?.Invoke();
 
-        // Cria as partículas de morte.
         if (deathParticles != null)
         {
-            Instantiate(
-                deathParticles,
-                transform.position,
-                Quaternion.identity
-            );
+            ParticleSystem ps = Instantiate(deathParticles, transform.position, Quaternion.identity);
+            Destroy(ps.gameObject, ps.main.duration);
         }
 
-        Destroy(gameObject);
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(false);
+        }
+
+        Destroy(gameObject, destroyDelay);
     }
 }

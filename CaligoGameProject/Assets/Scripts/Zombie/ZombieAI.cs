@@ -26,6 +26,7 @@ public class ZombieAI : MonoBehaviour
     private NavMeshAgent agent;
     private Animator animator;
     private EnemyHealth enemyHealth;
+    private Collider zombieCollider;
 
     private float nextTimeToAttack = 0f;
     private bool isDead = false;
@@ -37,20 +38,11 @@ public class ZombieAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         enemyHealth = GetComponent<EnemyHealth>();
-
-        if (agent == null)
-            Debug.LogError($"[{name}] NavMeshAgent não encontrado!", this);
-
-        if (animator == null)
-            Debug.LogError($"[{name}] Animator não encontrado!", this);
-
-        if (enemyHealth == null)
-            Debug.LogError($"[{name}] EnemyHealth não encontrado!", this);
+        zombieCollider = GetComponent<Collider>();
     }
 
     private void Start()
     {
-        // Busca o Player através do Singleton ou por Tag
         if (FirstPersonController.instance != null)
         {
             playerTransform = FirstPersonController.instance.transform;
@@ -61,7 +53,6 @@ public class ZombieAI : MonoBehaviour
             if (playerObj != null) playerTransform = playerObj.transform;
         }
 
-        // Inscreve no evento de morte do EnemyHealth
         if (enemyHealth != null)
         {
             enemyHealth.OnDeath += HandleDeath;
@@ -70,7 +61,6 @@ public class ZombieAI : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Cancela a inscrição para evitar memory leaks/null pointers
         if (enemyHealth != null)
         {
             enemyHealth.OnDeath -= HandleDeath;
@@ -79,7 +69,6 @@ public class ZombieAI : MonoBehaviour
 
     private void Update()
     {
-
         if (isDead || playerTransform == null) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
@@ -109,7 +98,7 @@ public class ZombieAI : MonoBehaviour
             if (distance <= attackRange) currentState = ZombieState.Attack;
             else if (distance > detectionRange + buffer) currentState = ZombieState.Idle;
         }
-        else // Idle
+        else
         {
             if (distance <= biteRange) currentState = ZombieState.Bite;
             else if (distance <= attackRange) currentState = ZombieState.Attack;
@@ -202,17 +191,18 @@ public class ZombieAI : MonoBehaviour
         }
     }
 
-    // Chamado automaticamente quando Die() roda no EnemyHealth
-
     private void HandleDeath()
     {
-        if (isDead)
-            return;
+        if (isDead) return;
 
         isDead = true;
         currentState = ZombieState.Dead;
 
-        // Para o agente e impede novos movimentos.
+        if (zombieCollider != null)
+        {
+            zombieCollider.enabled = false;
+        }
+
         if (agent != null && agent.enabled)
         {
             agent.isStopped = true;
@@ -221,13 +211,11 @@ public class ZombieAI : MonoBehaviour
             agent.enabled = false;
         }
 
-        // Atualiza o estado de morte no Animator imediatamente.
         if (animator != null)
         {
             animator.SetInteger(StateHash, (int)ZombieState.Dead);
         }
     }
-
 
     private void OnDrawGizmosSelected()
     {

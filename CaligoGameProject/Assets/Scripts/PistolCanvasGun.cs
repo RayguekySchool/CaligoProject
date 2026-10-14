@@ -9,7 +9,7 @@ public class PistolCanvasGun : MonoBehaviour
     public Animator animator;
     public float range = 100f;
     public Camera fpsCam;
-    public string bulletType = "Pistol";
+    public string bulletType = "pistol";
     public float fireRate = 0.5f;
 
     [Header("Ammo")]
@@ -118,14 +118,26 @@ public class PistolCanvasGun : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, range))
         {
-            EnemyHealth enemy =
-                hit.transform.GetComponent<EnemyHealth>() ??
-                hit.transform.GetComponentInParent<EnemyHealth>() ??
-                hit.transform.GetComponentInChildren<EnemyHealth>();
+            // Tenta pegar o novo script ZombieEnemy (ou EnemyHealth caso ainda use em outros inimigos)
+            ZombieEnemy zombie = hit.transform.GetComponent<ZombieEnemy>() ??
+                                 hit.transform.GetComponentInParent<ZombieEnemy>() ??
+                                 hit.transform.GetComponentInChildren<ZombieEnemy>();
 
-            if (enemy != null)
+            if (zombie != null)
             {
-                enemy.TakeBullet(bulletType);
+                zombie.TakeBullet(bulletType);
+            }
+            else
+            {
+                // Fallback caso ainda tenha inimigos com o script antigo EnemyHealth
+                EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>() ??
+                                    hit.transform.GetComponentInParent<EnemyHealth>() ??
+                                    hit.transform.GetComponentInChildren<EnemyHealth>();
+
+                if (enemy != null)
+                {
+                    enemy.TakeBullet(bulletType);
+                }
             }
         }
     }
