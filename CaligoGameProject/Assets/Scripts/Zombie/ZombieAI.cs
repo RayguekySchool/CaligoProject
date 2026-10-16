@@ -1,9 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
+using System;
 
 public class ZombieAI : MonoBehaviour
 {
     public enum ZombieState { Idle, Walk, Attack, Bite, Dead }
+
+    [System.Serializable]
+    public class BulletResistance
+    {
+        public string bulletType = "pistol";
+        public int bulletsToKill = 5;
+    }
 
     [Header("Current State")]
     public ZombieState currentState = ZombieState.Idle;
@@ -22,10 +31,18 @@ public class ZombieAI : MonoBehaviour
     [SerializeField] private float attackRate = 1.5f;
     [SerializeField] private float biteRate = 2.5f;
 
+    [Header("Health & Damage Config")]
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float destroyDelay = 1.5f; 
+    public ParticleSystem deathParticles;
+    public List<BulletResistance> resistances = new List<BulletResistance>();
+
+    private float currentHealth;
+    private Dictionary<string, int> bulletHits = new Dictionary<string, int>();
+
     private Transform playerTransform;
     private NavMeshAgent agent;
     private Animator animator;
-    private EnemyHealth enemyHealth;
     private Collider zombieCollider;
 
     private float nextTimeToAttack = 0f;
@@ -37,8 +54,17 @@ public class ZombieAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        enemyHealth = GetComponent<EnemyHealth>();
         zombieCollider = GetComponent<Collider>();
+
+        currentHealth = maxHealth;
+
+        foreach (var res in resistances)
+        {
+            if (res != null && !string.IsNullOrEmpty(res.bulletType))
+            {
+                bulletHits[res.bulletType] = 0;
+            }
+        }
     }
 
     private void Start()
@@ -51,19 +77,6 @@ public class ZombieAI : MonoBehaviour
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null) playerTransform = playerObj.transform;
-        }
-
-        if (enemyHealth != null)
-        {
-            enemyHealth.OnDeath += HandleDeath;
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (enemyHealth != null)
-        {
-            enemyHealth.OnDeath -= HandleDeath;
         }
     }
 
@@ -191,17 +204,42 @@ public class ZombieAI : MonoBehaviour
         }
     }
 
-    private void HandleDeath()
+    public void TakeBullet(string bulletType)
+    {
+        if (isDead || string.IsNullOrEmpty(bulletType)) return;
+
+        BulletResistance resistance = resistances.Find(x => x != null && x.bulletType.Equals(bulletType, StringComparison.OrdinalIgnoreCase));
+
+        if (resistance == null || resistance.bulletsToKill <= 0)
+        {
+            currentHealth -= (maxHealth / 5f);
+        }
+        else
+        {
+            if (!bulletHits.ContainsKey(resistance.bulletType))
+                bulletHits[resistance.bulletType] = 0;
+
+            bulletHits[resistance.bulletType]++;
+            float damage = maxHealth / resistance.bulletsToKill;
+            currentHealth -= damage;
+        }
+
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
     {
         if (isDead) return;
 
         isDead = true;
         currentState = ZombieState.Dead;
 
-        if (zombieCollider != null)
-        {
-            zombieCollider.enabled = false;
-        }
+        if (zombieCollider != null) zombieCollider.enabled = false;
 
         if (agent != null && agent.enabled)
         {
@@ -215,6 +253,14 @@ public class ZombieAI : MonoBehaviour
         {
             animator.SetInteger(StateHash, (int)ZombieState.Dead);
         }
+
+        if (deathParticles != null)
+        {
+            ParticleSystem ps = Instantiate(deathParticles, transform.position, Quaternion.identity);
+            Destroy(ps.gameObject, ps.main.duration);
+        }
+
+        Destroy(gameObject, destroyDelay);
     }
 
     private void OnDrawGizmosSelected()

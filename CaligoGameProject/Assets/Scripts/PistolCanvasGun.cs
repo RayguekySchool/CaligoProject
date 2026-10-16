@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -118,26 +117,13 @@ public class PistolCanvasGun : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, range))
         {
-            // Tenta pegar o novo script ZombieEnemy (ou EnemyHealth caso ainda use em outros inimigos)
-            ZombieEnemy zombie = hit.transform.GetComponent<ZombieEnemy>() ??
-                                 hit.transform.GetComponentInParent<ZombieEnemy>() ??
-                                 hit.transform.GetComponentInChildren<ZombieEnemy>();
+            ZombieAI zombie = hit.transform.GetComponent<ZombieAI>() ??
+                              hit.transform.GetComponentInParent<ZombieAI>() ??
+                              hit.transform.GetComponentInChildren<ZombieAI>();
 
             if (zombie != null)
             {
                 zombie.TakeBullet(bulletType);
-            }
-            else
-            {
-                // Fallback caso ainda tenha inimigos com o script antigo EnemyHealth
-                EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>() ??
-                                    hit.transform.GetComponentInParent<EnemyHealth>() ??
-                                    hit.transform.GetComponentInChildren<EnemyHealth>();
-
-                if (enemy != null)
-                {
-                    enemy.TakeBullet(bulletType);
-                }
             }
         }
     }
