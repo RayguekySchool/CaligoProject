@@ -1083,6 +1083,7 @@ GameObject:
   - component: {fileID: 51825823}
   - component: {fileID: 51825822}
   - component: {fileID: 51825821}
+  - component: {fileID: 51825825}
   m_Layer: 0
   m_Name: Zombie (14)
   m_TagString: Enemy
@@ -1173,7 +1174,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -1200,6 +1200,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &51825825
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51825819}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &59228849
 GameObject:
   m_ObjectHideFlags: 0
@@ -10101,6 +10124,7 @@ GameObject:
   - component: {fileID: 548944872}
   - component: {fileID: 548944871}
   - component: {fileID: 548944870}
+  - component: {fileID: 548944874}
   m_Layer: 0
   m_Name: Zombie (5)
   m_TagString: Enemy
@@ -10191,7 +10215,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -10218,6 +10241,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &548944874
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548944868}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &553949095
 GameObject:
   m_ObjectHideFlags: 0
@@ -10714,6 +10760,7 @@ GameObject:
   - component: {fileID: 581481710}
   - component: {fileID: 581481709}
   - component: {fileID: 581481708}
+  - component: {fileID: 581481712}
   m_Layer: 0
   m_Name: Zombie (6)
   m_TagString: Enemy
@@ -10804,7 +10851,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -10831,6 +10877,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &581481712
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581481706}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &581888993
 GameObject:
   m_ObjectHideFlags: 0
@@ -14504,6 +14573,7 @@ GameObject:
   - component: {fileID: 790990343}
   - component: {fileID: 790990342}
   - component: {fileID: 790990341}
+  - component: {fileID: 790990345}
   m_Layer: 0
   m_Name: Zombie (13)
   m_TagString: Enemy
@@ -14594,7 +14664,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -14621,6 +14690,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &790990345
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790990339}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &792081088
 GameObject:
   m_ObjectHideFlags: 0
@@ -15189,6 +15281,7 @@ GameObject:
   - component: {fileID: 818749411}
   - component: {fileID: 818749410}
   - component: {fileID: 818749409}
+  - component: {fileID: 818749413}
   m_Layer: 0
   m_Name: Zombie (17)
   m_TagString: Enemy
@@ -15279,7 +15372,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -15306,6 +15398,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &818749413
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818749407}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &823591623
 GameObject:
   m_ObjectHideFlags: 0
@@ -15811,6 +15926,7 @@ GameObject:
   - component: {fileID: 857656596}
   - component: {fileID: 857656595}
   - component: {fileID: 857656594}
+  - component: {fileID: 857656598}
   m_Layer: 0
   m_Name: Zombie (8)
   m_TagString: Enemy
@@ -15901,7 +16017,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -15928,6 +16043,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &857656598
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857656592}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &863767748
 GameObject:
   m_ObjectHideFlags: 0
@@ -17600,6 +17738,7 @@ GameObject:
   - component: {fileID: 945697181}
   - component: {fileID: 945697180}
   - component: {fileID: 945697179}
+  - component: {fileID: 945697183}
   m_Layer: 0
   m_Name: Zombie (7)
   m_TagString: Enemy
@@ -17690,7 +17829,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -17717,6 +17855,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &945697183
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945697177}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &946757263
 GameObject:
   m_ObjectHideFlags: 0
@@ -17921,6 +18082,7 @@ GameObject:
   - component: {fileID: 957083574}
   - component: {fileID: 957083573}
   - component: {fileID: 957083572}
+  - component: {fileID: 957083576}
   m_Layer: 0
   m_Name: Zombie (2)
   m_TagString: Enemy
@@ -18011,7 +18173,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -18038,6 +18199,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &957083576
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957083570}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &958812799
 GameObject:
   m_ObjectHideFlags: 0
@@ -18051,6 +18235,7 @@ GameObject:
   - component: {fileID: 958812803}
   - component: {fileID: 958812802}
   - component: {fileID: 958812801}
+  - component: {fileID: 958812805}
   m_Layer: 0
   m_Name: Zombie (4)
   m_TagString: Enemy
@@ -18141,7 +18326,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -18168,6 +18352,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &958812805
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958812799}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &960240210
 GameObject:
   m_ObjectHideFlags: 0
@@ -19314,6 +19521,7 @@ GameObject:
   - component: {fileID: 1039634213}
   - component: {fileID: 1039634212}
   - component: {fileID: 1039634211}
+  - component: {fileID: 1039634215}
   m_Layer: 0
   m_Name: Zombie (1)
   m_TagString: Enemy
@@ -19404,7 +19612,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -19431,6 +19638,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1039634215
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039634209}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1042518812
 GameObject:
   m_ObjectHideFlags: 0
@@ -23073,6 +23303,7 @@ GameObject:
   - component: {fileID: 1289131322}
   - component: {fileID: 1289131321}
   - component: {fileID: 1289131320}
+  - component: {fileID: 1289131324}
   m_Layer: 0
   m_Name: Zombie (12)
   m_TagString: Enemy
@@ -23163,7 +23394,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -23190,6 +23420,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1289131324
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289131318}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1291518258
 GameObject:
   m_ObjectHideFlags: 0
@@ -27247,6 +27500,7 @@ GameObject:
   - component: {fileID: 1557639565}
   - component: {fileID: 1557639564}
   - component: {fileID: 1557639563}
+  - component: {fileID: 1557639567}
   m_Layer: 0
   m_Name: Zombie (16)
   m_TagString: Enemy
@@ -27337,7 +27591,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -27364,6 +27617,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1557639567
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557639561}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1559130590
 GameObject:
   m_ObjectHideFlags: 0
@@ -27823,6 +28099,7 @@ GameObject:
   - component: {fileID: 1578818878}
   - component: {fileID: 1578818877}
   - component: {fileID: 1578818876}
+  - component: {fileID: 1578818880}
   m_Layer: 0
   m_Name: Zombie (11)
   m_TagString: Enemy
@@ -27913,7 +28190,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -27940,6 +28216,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1578818880
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578818874}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1582200193
 GameObject:
   m_ObjectHideFlags: 0
@@ -30048,6 +30347,7 @@ GameObject:
   - component: {fileID: 1706736739}
   - component: {fileID: 1706736738}
   - component: {fileID: 1706736737}
+  - component: {fileID: 1706736741}
   m_Layer: 0
   m_Name: Zombie (9)
   m_TagString: Enemy
@@ -30138,7 +30438,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -30165,6 +30464,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1706736741
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706736735}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1708478909
 GameObject:
   m_ObjectHideFlags: 0
@@ -33304,6 +33626,7 @@ GameObject:
   - component: {fileID: 1894495828}
   - component: {fileID: 1894495827}
   - component: {fileID: 1894495826}
+  - component: {fileID: 1894495830}
   m_Layer: 0
   m_Name: Zombie (3)
   m_TagString: Enemy
@@ -33394,7 +33717,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -33421,6 +33743,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1894495830
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894495824}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1899275932
 GameObject:
   m_ObjectHideFlags: 0
@@ -33992,6 +34337,7 @@ GameObject:
   - component: {fileID: 1934647787}
   - component: {fileID: 1934647786}
   - component: {fileID: 1934647785}
+  - component: {fileID: 1934647789}
   m_Layer: 0
   m_Name: Zombie (15)
   m_TagString: Enemy
@@ -34082,7 +34428,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -34109,6 +34454,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1934647789
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934647783}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1935451794
 GameObject:
   m_ObjectHideFlags: 0
@@ -34769,6 +35137,7 @@ GameObject:
   - component: {fileID: 1968652071}
   - component: {fileID: 1968652070}
   - component: {fileID: 1968652069}
+  - component: {fileID: 1968652073}
   m_Layer: 0
   m_Name: Zombie (10)
   m_TagString: Enemy
@@ -34859,7 +35228,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -34886,6 +35254,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1968652073
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968652067}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Height: 30
+  m_Direction: 1
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!1 &1973033528
 GameObject:
   m_ObjectHideFlags: 0
@@ -38504,7 +38895,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6138193493581630178}
   - component: {fileID: 1477383934890053886}
-  - component: {fileID: 7510782485227819148}
   - component: {fileID: 5718374902884931659}
   - component: {fileID: 4650169884884339297}
   - component: {fileID: 5206735256727896753}
@@ -40345,10 +40735,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 6
+  m_Height: 30
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 15, z: 2}
 --- !u!114 &6368932652866500226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40371,7 +40761,6 @@ MonoBehaviour:
   attackRate: 1.5
   biteRate: 0.7
   maxHealth: 100
-  destroyDelay: 1.5
   deathParticles: {fileID: 9154987714805612551, guid: c432d2c7762cce44da0578f2e3ce50a0, type: 3}
   resistances:
   - bulletType: pistol
@@ -40840,14 +41229,6 @@ Transform:
   - {fileID: 5321845863846306838}
   m_Father: {fileID: 7317315994369908733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &7510782485227819148
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1763443441510825966}
-  m_Enabled: 1
 --- !u!114 &7510782485227819149
 MonoBehaviour:
   m_ObjectHideFlags: 0

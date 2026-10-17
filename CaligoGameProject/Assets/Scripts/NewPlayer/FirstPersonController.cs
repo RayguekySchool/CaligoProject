@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FirstPersonController : MonoBehaviour
 {
@@ -57,9 +58,11 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float healthTimeIncrement = 0.1f;
     private float currentHealth;
     private Coroutine regeneratingHealth;
+    private bool isDead = false;
     public static Action<float> OnTakeDamage;
     public static Action<float> OnDamage;
     public static Action<float> OnHeal;
+
 
     [Header("Stamina Parameters")]
     [SerializeField] private float maxStamina = 100;
@@ -331,32 +334,65 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
-    private void ApplyDamage(float dmg)
-    {
-        currentHealth -= dmg;
-        OnDamage?.Invoke(currentHealth);
 
-        if (currentHealth <= 0)
-        {
-            KillPlayer();
-        }
-        else if (canRegenHealth)
-        {
-            if (regeneratingHealth != null)
-                StopCoroutine(regeneratingHealth);
 
-            regeneratingHealth = StartCoroutine(RegenerateHealth());
-        }
-    }
+private void ApplyDamage(float dmg)
+{
+    // Impede que o jogador receba dano depois de morrer.
+    if (isDead)
+        return;
 
-    private void KillPlayer()
-    {
+    currentHealth -= dmg;
+
+    if (currentHealth < 0)
         currentHealth = 0;
+
+    OnDamage?.Invoke(currentHealth);
+
+    if (currentHealth <= 0)
+    {
+        KillPlayer();
+    }
+    else if (canRegenHealth)
+    {
         if (regeneratingHealth != null)
             StopCoroutine(regeneratingHealth);
 
-        print("DEAD");
+        regeneratingHealth = StartCoroutine(RegenerateHealth());
     }
+}
+
+private void KillPlayer()
+{
+    if (isDead)
+        return;
+
+    isDead = true;
+    currentHealth = 0;
+
+    // Interrompe a regeneração de vida.
+    if (regeneratingHealth != null)
+    {
+        StopCoroutine(regeneratingHealth);
+        regeneratingHealth = null;
+    }
+
+    // Interrompe o movimento do jogador.
+    CanMove = false;
+
+    Debug.Log("PLAYER DEAD - Restarting scene...");
+
+    // Aguarda 1,5 segundo antes de reiniciar.
+    StartCoroutine(RestartScene());
+}
+
+private IEnumerator RestartScene()
+{
+    yield return new WaitForSeconds(1.5f);
+
+    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+}
+
 
     private void ApplyFineMovements()
     {

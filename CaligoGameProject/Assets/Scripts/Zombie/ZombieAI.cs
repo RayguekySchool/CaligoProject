@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -33,12 +34,15 @@ public class ZombieAI : MonoBehaviour
 
     [Header("Health & Damage Config")]
     [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float destroyDelay = 1.5f; 
     public ParticleSystem deathParticles;
-    public List<BulletResistance> resistances = new List<BulletResistance>();
+
+    public List<BulletResistance> resistances =
+        new List<BulletResistance>();
 
     private float currentHealth;
-    private Dictionary<string, int> bulletHits = new Dictionary<string, int>();
+
+    private Dictionary<string, int> bulletHits =
+        new Dictionary<string, int>();
 
     private Transform playerTransform;
     private NavMeshAgent agent;
@@ -48,7 +52,8 @@ public class ZombieAI : MonoBehaviour
     private float nextTimeToAttack = 0f;
     private bool isDead = false;
 
-    private static readonly int StateHash = Animator.StringToHash("state");
+    private static readonly int StateHash =
+        Animator.StringToHash("state");
 
     private void Awake()
     {
@@ -60,7 +65,8 @@ public class ZombieAI : MonoBehaviour
 
         foreach (var res in resistances)
         {
-            if (res != null && !string.IsNullOrEmpty(res.bulletType))
+            if (res != null &&
+                !string.IsNullOrEmpty(res.bulletType))
             {
                 bulletHits[res.bulletType] = 0;
             }
@@ -71,20 +77,28 @@ public class ZombieAI : MonoBehaviour
     {
         if (FirstPersonController.instance != null)
         {
-            playerTransform = FirstPersonController.instance.transform;
+            playerTransform =
+                FirstPersonController.instance.transform;
         }
         else
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null) playerTransform = playerObj.transform;
+            GameObject playerObj =
+                GameObject.FindGameObjectWithTag("Player");
+
+            if (playerObj != null)
+                playerTransform = playerObj.transform;
         }
     }
 
     private void Update()
     {
-        if (isDead || playerTransform == null) return;
+        if (isDead || playerTransform == null)
+            return;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        float distanceToPlayer = Vector3.Distance(
+            transform.position,
+            playerTransform.position
+        );
 
         DetermineState(distanceToPlayer);
         ExecuteStateBehavior();
@@ -93,35 +107,45 @@ public class ZombieAI : MonoBehaviour
 
     private void DetermineState(float distance)
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
         float buffer = 0.3f;
 
         if (currentState == ZombieState.Bite)
         {
-            if (distance > biteRange + buffer) currentState = ZombieState.Attack;
+            if (distance > biteRange + buffer)
+                currentState = ZombieState.Attack;
         }
         else if (currentState == ZombieState.Attack)
         {
-            if (distance <= biteRange) currentState = ZombieState.Bite;
-            else if (distance > attackRange + buffer) currentState = ZombieState.Walk;
+            if (distance <= biteRange)
+                currentState = ZombieState.Bite;
+            else if (distance > attackRange + buffer)
+                currentState = ZombieState.Walk;
         }
         else if (currentState == ZombieState.Walk)
         {
-            if (distance <= attackRange) currentState = ZombieState.Attack;
-            else if (distance > detectionRange + buffer) currentState = ZombieState.Idle;
+            if (distance <= attackRange)
+                currentState = ZombieState.Attack;
+            else if (distance > detectionRange + buffer)
+                currentState = ZombieState.Idle;
         }
         else
         {
-            if (distance <= biteRange) currentState = ZombieState.Bite;
-            else if (distance <= attackRange) currentState = ZombieState.Attack;
-            else if (distance <= detectionRange) currentState = ZombieState.Walk;
+            if (distance <= biteRange)
+                currentState = ZombieState.Bite;
+            else if (distance <= attackRange)
+                currentState = ZombieState.Attack;
+            else if (distance <= detectionRange)
+                currentState = ZombieState.Walk;
         }
     }
 
     private void ExecuteStateBehavior()
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
         switch (currentState)
         {
@@ -150,6 +174,7 @@ public class ZombieAI : MonoBehaviour
                     agent.velocity = Vector3.zero;
                     agent.updateRotation = false;
                 }
+
                 LookAtPlayer();
 
                 if (Time.time >= nextTimeToAttack)
@@ -166,6 +191,7 @@ public class ZombieAI : MonoBehaviour
                     agent.velocity = Vector3.zero;
                     agent.updateRotation = false;
                 }
+
                 LookAtPlayer();
 
                 if (Time.time >= nextTimeToAttack)
@@ -187,12 +213,21 @@ public class ZombieAI : MonoBehaviour
 
     private void LookAtPlayer()
     {
-        Vector3 direction = (playerTransform.position - transform.position).normalized;
+        Vector3 direction =
+            (playerTransform.position - transform.position).normalized;
+
         direction.y = 0;
+
         if (direction != Vector3.zero)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            Quaternion lookRotation =
+                Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                lookRotation,
+                Time.deltaTime * 5f
+            );
         }
     }
 
@@ -200,47 +235,98 @@ public class ZombieAI : MonoBehaviour
     {
         if (animator != null && !isDead)
         {
-            animator.SetInteger(StateHash, (int)currentState);
+            animator.SetInteger(
+                StateHash,
+                (int)currentState
+            );
         }
     }
 
+
+
     public void TakeBullet(string bulletType)
     {
-        if (isDead || string.IsNullOrEmpty(bulletType)) return;
-
-        BulletResistance resistance = resistances.Find(x => x != null && x.bulletType.Equals(bulletType, StringComparison.OrdinalIgnoreCase));
-
-        if (resistance == null || resistance.bulletsToKill <= 0)
+        if (isDead)
         {
-            currentHealth -= (maxHealth / 5f);
+            Debug.LogWarning(name + " já está morto.");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(bulletType))
+        {
+            Debug.LogError("O tipo de bala está vazio!");
+            return;
+        }
+
+        BulletResistance resistance = resistances.Find(
+            x => x != null &&
+            x.bulletType.Equals(
+                bulletType,
+                StringComparison.OrdinalIgnoreCase
+            )
+        );
+
+        if (resistance == null)
+        {
+            Debug.LogWarning(
+                "Nenhuma resistência encontrada para: " + bulletType
+            );
+
+            currentHealth -= maxHealth / 5f;
         }
         else
         {
+            if (resistance.bulletsToKill <= 0)
+            {
+                Debug.LogError("Bullets To Kill precisa ser maior que zero.");
+                return;
+            }
+
             if (!bulletHits.ContainsKey(resistance.bulletType))
                 bulletHits[resistance.bulletType] = 0;
 
             bulletHits[resistance.bulletType]++;
+
             float damage = maxHealth / resistance.bulletsToKill;
             currentHealth -= damage;
+
+            Debug.Log(
+                name + " recebeu tiro " +
+                bulletHits[resistance.bulletType] +
+                "/" + resistance.bulletsToKill +
+                " | Dano: " + damage +
+                " | Vida restante: " + currentHealth
+            );
         }
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
         if (currentHealth <= 0f)
         {
+            Debug.Log(name + " morreu! Executando Die().");
             Die();
         }
     }
 
+
     public void Die()
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
+        // Impede que o zumbi morra mais de uma vez.
         isDead = true;
         currentState = ZombieState.Dead;
 
-        if (zombieCollider != null) zombieCollider.enabled = false;
+        // Guarda a posição antes de destruir o zumbi.
+        Vector3 deathPosition = transform.position;
+        Quaternion deathRotation = transform.rotation;
 
+        // Desativa a colisão.
+        if (zombieCollider != null)
+            zombieCollider.enabled = false;
+
+        // Para e desativa o NavMeshAgent.
         if (agent != null && agent.enabled)
         {
             agent.isStopped = true;
@@ -249,26 +335,59 @@ public class ZombieAI : MonoBehaviour
             agent.enabled = false;
         }
 
+        // Interrompe a animação e a lógica do zumbi.
         if (animator != null)
-        {
-            animator.SetInteger(StateHash, (int)ZombieState.Dead);
-        }
+            animator.enabled = false;
 
+        // Cria uma partícula independente do zumbi.
         if (deathParticles != null)
         {
-            ParticleSystem ps = Instantiate(deathParticles, transform.position, Quaternion.identity);
-            Destroy(ps.gameObject, ps.main.duration);
+            ParticleSystem particles = Instantiate(
+                deathParticles,
+                deathPosition,
+                deathRotation
+            );
+
+            // Garante que o efeito comece a tocar.
+            particles.Play(true);
+
+            // Destrói o efeito somente quando terminar.
+            StartCoroutine(
+                DestroyParticlesWhenFinished(particles)
+            );
         }
 
-        Destroy(gameObject, destroyDelay);
+        // Destrói o GameObject do zumbi imediatamente.
+        Destroy(gameObject);
+    }
+
+    private IEnumerator DestroyParticlesWhenFinished(
+        ParticleSystem particles)
+    {
+        if (particles == null)
+            yield break;
+
+        // Aguarda todas as partículas dos sistemas filhos
+        // também terminarem.
+        while (particles != null && particles.IsAlive(true))
+        {
+            yield return null;
+        }
+
+        if (particles != null)
+        {
+            Destroy(particles.gameObject);
+        }
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
+
         Gizmos.color = Color.orange;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, biteRange);
     }

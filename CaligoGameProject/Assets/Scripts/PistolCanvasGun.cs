@@ -123,7 +123,13 @@ public class PistolCanvasGun : MonoBehaviour
 
             if (zombie != null)
             {
+                Debug.Log("Tiro acertou o zumbi: " + zombie.name);
                 zombie.TakeBullet(bulletType);
+            }
+            else
+            {
+                Debug.Log("O tiro atingiu: " + hit.collider.name +
+                          ", mas não encontrou ZombieAI.");
             }
         }
     }
